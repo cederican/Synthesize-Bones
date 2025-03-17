@@ -20,7 +20,7 @@ from .fracture_modes import fracture_modes
 
 
 
-def generate_fractures(input_dir,num_modes=20,num_impacts=80,output_dir=None,verbose=True,compressed=True,cage_size=4000,volume_constraint=(1/50)):
+def generate_fractures(input_dir,num_modes=20,num_impacts=80,output_dir=None,verbose=True,compressed=True,cage_size=4000,volume_constraint=(1/50),impact_intervall=None, threshold_interval=None):
     """Randomly generate different fractures of a given object and write them to an output directory.
     
     Parameters
@@ -96,10 +96,16 @@ def generate_fractures(input_dir,num_modes=20,num_impacts=80,output_dir=None,ver
     if verbose:
         print("Modes computed in ",round(mode_time,3),"seconds.")
     # # Generate random contact points on the surface
-    B,FI = igl.random_points_on_mesh(1000*num_impacts,v,f)
+    B,FI = igl.random_points_on_mesh(5000*num_impacts,v,f)
     B = np.vstack((B[:,0],B[:,0],B[:,0],B[:,1],B[:,1],B[:,1],B[:,2],B[:,2],B[:,2])).T
     P = B[:,0:3]*v[f[FI,0],:] + B[:,3:6]*v[f[FI,1],:] + B[:,6:9]*v[f[FI,2],:]
-    sigmas = np.random.rand(1000*num_impacts)*1000
+    if impact_intervall is not None:
+        P = P[P[:,2] > impact_intervall[0]]
+        P = P[P[:,2] < impact_intervall[1]]
+    sigmas = np.random.rand(5000*num_impacts)*1000
+    if threshold_interval is not None:
+        sigmas = sigmas[sigmas > threshold_interval[0]]
+        sigmas = sigmas[sigmas < threshold_interval[1]]
 
     vols = igl.volume(modes.vertices,modes.elements)
     total_vol = np.sum(vols)
@@ -110,7 +116,7 @@ def generate_fractures(input_dir,num_modes=20,num_impacts=80,output_dir=None,ver
     running_num = 0
     for i in range(P.shape[0]):
         t400 = time.time()
-        modes.impact_projection(contact_point=P[i,:],direction=np.array([1.0]),threshold=sigmas[i],num_modes_used=20)
+        modes.impact_projection(contact_point=P[i,:],direction=np.array([1.0]),threshold=sigmas[i],num_modes_used=num_modes)
         min_volume = volume_constraint*total_vol/(modes.n_pieces_after_impact)
         current_min_volume = total_vol
         for i in range(modes.n_pieces_after_impact):

@@ -8,7 +8,8 @@ from context import gpytoolbox
 from gpytoolbox.copyleft import lazy_cage
 
 # This is the "fine mesh", i.e. the mesh we use for rendering
-v_fine, f_fine = igl.read_triangle_mesh("data/bunny_oded.obj")
+v_fine, f_fine = igl.read_triangle_mesh("data/bones/mesh_smooth_processed.obj")
+#v_fine, f_fine = igl.read_triangle_mesh("data/bunny_oded.obj")
 v_fine = gpytoolbox.normalize_points(v_fine)
 # This is the "cage mesh", i.e. the coarser mesh that we will tetrahedralize and use for the physical simulation
 v, f = lazy_cage(v_fine,f_fine,num_faces=2000)
@@ -19,7 +20,7 @@ nodes, elements =  tgen.tetrahedralize()
 # Initialize fracture mode class
 modes = fracture.fracture_modes(nodes,elements) 
 # Set parameters for call to fracture modes
-params = fracture.fracture_modes_parameters(num_modes=10,verbose=True,d=3)
+params = fracture.fracture_modes_parameters(num_modes=4,verbose=True,d=3)
 # Compute fracture modes
 modes.compute_modes(parameters=params)
 modes.impact_precomputation(v_fine=v_fine,f_fine=f_fine)

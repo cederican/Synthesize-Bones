@@ -138,3 +138,7 @@ dmypy.json
 _skipped.face
 .gitignore
 *.mov
+
+data/bones/*
+data/healthy/*
+screenshot_*.png
