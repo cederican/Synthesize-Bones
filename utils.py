@@ -265,6 +265,16 @@ def pixel_padding_with_channel(volume, size):
     ] = volume[:, :, :]
     return res
 
+def shift_bbox(volume, bbox, translation_vector, size):
+    res = np.zeros((1, *size), volume.dtype)
+    res[
+        0,
+        bbox[0, 0] + translation_vector[0] : bbox[1, 0] + translation_vector[0],
+        bbox[0, 1] + translation_vector[1] : bbox[1, 1] + translation_vector[1],
+        bbox[0, 2] + translation_vector[2] : bbox[1, 2] + translation_vector[2],
+    ] = volume[0,:,:,:]
+    return res
+
 def pixel_pad(volume, size):
     res = np.zeros(
         (

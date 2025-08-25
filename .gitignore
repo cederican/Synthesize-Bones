@@ -13,6 +13,12 @@ __pycache__/
 results/
 # C extensions
 *.so
+*.obj
+*.nii.gz
+*.pt
+*.png
+
+data/
 
 # Distribution / packaging
 .Python

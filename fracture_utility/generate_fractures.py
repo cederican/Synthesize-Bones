@@ -96,13 +96,13 @@ def generate_fractures(input_dir,num_modes=20,num_impacts=80,output_dir=None,ver
     if verbose:
         print("Modes computed in ",round(mode_time,3),"seconds.")
     # # Generate random contact points on the surface
-    B,FI = igl.random_points_on_mesh(5000*num_impacts,v,f)
+    B,FI = igl.random_points_on_mesh(10000*num_impacts,v,f)
     B = np.vstack((B[:,0],B[:,0],B[:,0],B[:,1],B[:,1],B[:,1],B[:,2],B[:,2],B[:,2])).T
     P = B[:,0:3]*v[f[FI,0],:] + B[:,3:6]*v[f[FI,1],:] + B[:,6:9]*v[f[FI,2],:]
     if impact_intervall is not None:
         P = P[P[:,2] > impact_intervall[0]]
         P = P[P[:,2] < impact_intervall[1]]
-    sigmas = np.random.rand(5000*num_impacts)*1000
+    sigmas = np.random.rand(10000*num_impacts)*1000
     if threshold_interval is not None:
         sigmas = sigmas[sigmas > threshold_interval[0]]
         sigmas = sigmas[sigmas < threshold_interval[1]]

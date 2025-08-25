@@ -2,11 +2,11 @@ import os
 import subprocess
 
 # Define local and remote paths
-local_base = "/Users/cedimac/fracture-modes/data/healthy"
+local_base = "/Users/cedimac/fracture-modes/data/PreOP"
 remote_user = "cederic"
 remote_host = "arp"
-remote_base_L = "/home/datasets/Breaking-Bad-Dataset.synthezised.bones/data/breaking_bad/bones/Tibia_L"
-remote_base_R = "/home/datasets/Breaking-Bad-Dataset.synthezised.bones/data/breaking_bad/bones/Tibia_R"
+remote_base_L = "/home/datasets/Breaking-Bad-Dataset.synthezised.bones/realTibiaHead/breaking_bad/bones/Tibia_L"
+remote_base_R = "/home/datasets/Breaking-Bad-Dataset.synthezised.bones/realTibiaHead/breaking_bad/bones/Tibia_R"
 
 data_lst = os.listdir(local_base)
 data_lst.sort(key=lambda x: int(x))
@@ -20,11 +20,13 @@ for idx in data_lst:
     for subfolder in os.listdir(folder_path):
         subfolder_path = os.path.join(folder_path, subfolder)
         
-        if os.path.isdir(subfolder_path) and subfolder.startswith(f"{idx}_tibia"):
+        if os.path.isdir(subfolder_path) and subfolder.startswith(f"real"):
             if "_L" in subfolder:
                 remote_base = remote_base_L
             elif "_R" in subfolder:
                 remote_base = remote_base_R
+            elif "0" in subfolder:
+                remote_base = remote_base_L
             else:
                 print(f"Skipping {subfolder}, does not match expected format.")
                 continue
