@@ -1,5 +1,35 @@
 # Breaking Good: Fracture Modes for Realtime Destruction
 
+## This repository is mainly build on the parent repository Breaking Good. There are only several additional scripts to preprocess our own tibia bone dataset.
+
+In order to process NIFTI segmentation data to numpy data, run
+```bash
+python bone_processing/bone_dataset.py
+```
+
+Transform numpy data into mesh data (.obj) and clean up meshes in 3D Slicer, run
+```bash
+python bone_processing/slicer.py
+```
+
+Fracture generation by choosing fracture settings inside script in advance, run
+```bash
+python scripts/frac_dataset_gen.py
+```
+
+To upload the processed fractured dataset to a cluster, run
+```bash
+python upload_dataset.py
+```
+
+Visualizing the process of fracture generation can be done via
+```bash
+python scripts/example_fracture_gui.py
+```
+
+To set up the fracture simulation tool follow the official steps from the repository Breaking Good below:
+
+
 This is the code accompanying the *Transactions on Graphics* paper ["Breaking Good: Fracture Modes for Realtime Destruction"](https://www.silviasellan.com/pdf/papers/fracture-harmonics.pdf), by Silvia Sellán, Jack Luong, Leticia Mattos Da Silva,
 Aravind Ramakrishnan, Yuchuan Yang and Alec Jacobson and the *NeurIPS Datasets & Benchmarks 2022* paper ["Breaking Bad: A Dataset for Geometric Fracture and Reassembly"](https://breaking-bad-dataset.github.io) by Silvia Sellán, Yun-Chun Chen, Ziyi Wu, Animesh Garg and Alec Jacobson.
 
